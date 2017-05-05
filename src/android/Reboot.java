@@ -8,7 +8,8 @@ import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.content.Context;
+import android.os.PowerManager;
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -26,9 +27,9 @@ public class Reboot extends CordovaPlugin {
     }
 
     private void reboot(CallbackContext callbackContext) {
-        try {                                                                                                                                  
-          Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot" });
-          proc.waitFor();
+        try {
+          PowerManager pm = (PowerManager) this.cordova.getActivity().getApplicationContext().getSystemService(Context.POWER_SERVICE);
+          pm.reboot(null);
           callbackContext.success("Rebooting...");
         } catch (Exception ex) {
           Log.i(TAG, "Could not reboot", ex);
